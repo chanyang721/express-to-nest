@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import express, { Express } from 'express';
 import http, { Server } from 'http';
 import config from './config/env/environment';
+import middlewares from './middlewares/express';
 
 class App {
     private app: Express
@@ -17,15 +18,16 @@ class App {
     }
 
     private middlewares() {
-        console.log('Loading Middlewares')
+        middlewares(this.app)
+        console.log(`[ ${this.env} ] | Middlewares loaded`)
     }
 
     private database() {
-        console.log('Database Connection')
+        console.log(`[ ${this.env} ] | Database Connection`)
     }
 
     private routes() {
-        console.log(`Loading Routes`)
+        console.log(`[ ${this.env} ] | Routes loaded`)
     }
 
     private run(): void {
