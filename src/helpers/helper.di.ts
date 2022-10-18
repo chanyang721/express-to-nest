@@ -1,0 +1,1 @@
+import tsyringe from 'tsyringe';
