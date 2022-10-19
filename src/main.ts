@@ -3,7 +3,10 @@ import express, { Express } from 'express';
 import http, { Server } from 'http';
 import config from './config/env/environment';
 import middlewares from './middlewares/express';
+import { Injectable } from './helpers/helper.di';
+// import { DatabaseConnection } from "./database/connection";
 
+@Injectable()
 class App {
     private app: Express
     private server: Server
@@ -13,7 +16,7 @@ class App {
     constructor() {
         this.app = express()
         this.server = http.createServer(this.app)
-        this.port = Number(config.PORT)
+        this.port = +config.PORT
         this.env = process.env.NODE_ENV || 'development'
     }
 
@@ -23,7 +26,7 @@ class App {
     }
 
     private database() {
-        console.log(`[ ${this.env} ] | Database Connection`)
+        console.log(`[ ${this.env} ] | Database Connected`)
     }
 
     private routes() {

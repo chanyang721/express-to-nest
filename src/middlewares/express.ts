@@ -1,8 +1,8 @@
-import { Express } from 'express';
+import express, { Express } from 'express';
 import cors, { CorsOptions } from 'cors'
-import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import hpp from 'hpp'
+import morgan from 'morgan'
 
 
 export default (app: Express) => {
@@ -15,8 +15,8 @@ export default (app: Express) => {
     }
 
     app.use(cors(corsOptions))
-    app.use(bodyParser.json())
-    app.use(bodyParser.urlencoded({ extended: true }))
+    app.use(express.json())
     app.use(helmet())
     app.use(hpp())
+    app.use(morgan(process.env.ENV_NODE === 'development' ? 'dev' : 'combined'))
 }
