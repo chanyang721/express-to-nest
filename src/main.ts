@@ -1,21 +1,20 @@
 import 'reflect-metadata';
 import express, { Express } from 'express';
-import http, { Server } from 'http';
 import config from './config/env/environment';
 import middlewares from './middlewares/express';
-import { Injectable } from './helpers/helper.di';
-// import { DatabaseConnection } from "./database/connection";
+import { Injectable, Inject } from './helpers/helper.di';
+import { DatabaseConnection } from "./database/connection";
 
 @Injectable()
 class App {
     private app: Express
-    private server: Server
     private port: number
     private env: string
 
-    constructor() {
+    constructor(
+        @Inject('Database') private db: DatabaseConnection,
+    ) {
         this.app = express()
-        this.server = http.createServer(this.app)
         this.port = +config.PORT
         this.env = process.env.NODE_ENV || 'development'
     }
@@ -25,7 +24,8 @@ class App {
         console.log(`[ ${this.env} ] | Middlewares loaded`)
     }
 
-    private database() {
+    private async database() {
+        await this.db.getConn()
         console.log(`[ ${this.env} ] | Database Connected`)
     }
 
@@ -35,7 +35,7 @@ class App {
 
     private run(): void {
         try {
-            this.server.listen(this.port, () => {
+            this.app.listen(this.port, () => {
                 console.log(`[ ${this.env} ] | Server running on port ${this.port}`)
             })
         }
@@ -55,7 +55,9 @@ class App {
 //** Run App */
 (
     () => {
-        const app = new App()
+        const app = new App(
+            new DatabaseConnection()
+        )
         app.main()
     }
 )();

@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-config()
+config({ path: './.env' })
 
 export default {
     PORT: process.env.PORT || 4000,
@@ -9,8 +9,9 @@ export default {
         PORT: process.env.DATABASE_PORT || 3306,
         HOST: process.env.DATABASE_HOST || 'localhost',
         USERNAME: process.env.DATABASE_USER || 'root',
-        PASSWORD: process.env.DATABASE_PASSWORD || '1q2w',
-        DATABASE: process.env.DATABASE_NAME || 'database'
+        PASSWORD: process.env.DATABASE_PASSWORD || '',
+        DATABASE: process.env.DATABASE_NAME || 'test'
     }
+
 
 }
